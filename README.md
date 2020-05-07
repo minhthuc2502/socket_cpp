@@ -1,5 +1,5 @@
 # Overview
-The project aims to create a socket allow a server and a client can connect and communicate together
+The project aims to create a socket which allow a server and a client can connect and communicate together
 
 ## Run application
 - Download code source.
@@ -21,13 +21,13 @@ $ ./client -p 8080 -a 127.0.0.1 -n client
 
 - Know more information about argument :
  ```
-$ ./client help
+$ ./client --help
 ```
 or
  ```
-$ ./server help
+$ ./server --help
 ```
 ### Note
 
-- The example is tested with ip address of localhost. If you want to communicate between the other machines, try to change ip address.
+- The example is tested with ip address of `localhost`. If you want to communicate between the other machines, try to change ip address.
 - To access the server, client needs to connect to the same network as server.
