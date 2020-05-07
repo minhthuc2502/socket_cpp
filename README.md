@@ -8,13 +8,18 @@ The project aims to create a socket which allow a server and a client can connec
 $ make all
 ```
 
-- Run application for example :
-> server side:
+- Run application :
+> entering directory app:
+ ```
+$ cd build/apps
+```
+
+> server side example:
  ```
 $ ./server -p 8080 -a 127.0.0.1 -n server
 ```
 
-> client side:
+> client side example:
  ```
 $ ./client -p 8080 -a 127.0.0.1 -n client
 ```
