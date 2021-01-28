@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "sockclient.hpp"
+#include "../include/sockclient.hpp"
 #include <iostream>
 #include <signal.h>
 #include <getopt.h>

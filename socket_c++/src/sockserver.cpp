@@ -1,4 +1,4 @@
-#include "sockserver.hpp"
+#include "../include/sockserver.hpp"
 #include <arpa/inet.h>
 #include <sys/socket.h> 
 #include <stdlib.h> 
@@ -58,12 +58,12 @@ int SockServer::Start()
     int addrlen = sizeof(address);
     if((ret = Create()) != 0)
     {
-        printf("error when create socket\n");
+        perror("error when create socket\n");
         return ret;
     }
     if((ret = Setup()) != 0)
     {
-        printf("error when setup socket\n");
+        perror("error when setup socket\n");
         return ret;
     }
     printf("Listenning...\n");
@@ -78,7 +78,7 @@ int SockServer::Start()
     }
     /**
      * accept the first connection request in queue
-     * Create new connected socket and return new file descriptor for this socket
+     * Create new connected socket and return new file descriptor for this socket, set address to address of client
     */
     if ((_fd = accept(_fd_session, (struct sockaddr *)&address,  (socklen_t*)&addrlen)) < 0) 
     { 

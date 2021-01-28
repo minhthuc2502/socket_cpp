@@ -7,12 +7,12 @@ APP_DIR		:= ./build/apps
 TARGET1		:= client
 TARGET2		:= server
 INCLUDE		:= -Iinclude/
-SRC			:= $(wildcard *.cpp)
+SRC			:= $(wildcard ./src/*.cpp)
 OBJECTS		:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
 all:
 	make -j $(APP_DIR)/$(TARGET1) $(APP_DIR)/$(TARGET2)
-$(OBJ_DIR)/%.o : %.cpp
+$(OBJ_DIR)/%.o : ./src/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $< -o $@ $(LDFLAGS)
 

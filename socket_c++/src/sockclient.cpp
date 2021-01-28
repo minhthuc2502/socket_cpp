@@ -1,4 +1,4 @@
-#include "sockclient.hpp"
+#include "../include/sockclient.hpp"
 
 int SockClient::Create()
 {
@@ -49,12 +49,19 @@ int SockClient::Start()
 
 void SockClient::Close()
 {
-    if (ipAddress != NULL)
+    if (!ipAddress)
+    {
         free(ipAddress);
-    if (name != NULL)
+        ipAddress = NULL;
+    }
+    if (!name) {
         free(name);
-    if (namepeer != NULL)
+        name = NULL;
+    }
+    if (!namepeer) {
         free(namepeer);
+        namepeer = NULL;
+    }
     printf("Disconnected\n");
     exit(EXIT_SUCCESS);
 }
