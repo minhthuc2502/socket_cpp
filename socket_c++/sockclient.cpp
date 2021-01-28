@@ -40,11 +40,7 @@ int SockClient::Start()
      * connect request from client
      * connect to socket referred to by file descriptor _fd to the address specified by address
     */
-    if ((ret = connect(_fd, (struct sockaddr *)&address, sizeof(address))) < 0) 
-    { 
-        printf("Connection Failed \n"); 
-        return ret; 
-    }
+    while ((ret = connect(_fd, (struct sockaddr *)&address, sizeof(address))) < 0);
     printf("Connected\n");
     EchangeHostName(_fd);
     ret = EchangeMessage();
