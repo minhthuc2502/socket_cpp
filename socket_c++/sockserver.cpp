@@ -4,7 +4,7 @@
 #include <stdlib.h> 
 #include <netinet/in.h> 
 #include <unistd.h>
-
+#include <iostream>
 int SockServer::Create()
 {
     /**
@@ -29,7 +29,7 @@ int SockServer::Setup()
     int ret = 0;
     /**
      * add options for socket referred by file descriptor
-     * SO_REUSEADDR, SO_REUSEPORT : reuse of address and port
+     * SO_REUSEADDR, SO_REUSEPORT : reuse of address and port when other connnection come
     */
     if ((ret = setsockopt(_fd_session, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) != 0)
     { 
@@ -93,12 +93,19 @@ int SockServer::Start()
 
 void SockServer::Close()
 {
-    if (ipAddress != NULL)
+    if (!ipAddress)
+    {
         free(ipAddress);
-    if (name != NULL)
+        ipAddress = NULL;
+    }
+    if (!name) {
         free(name);
-    if (namepeer != NULL)
+        name = NULL;
+    }
+    if (!namepeer) {
         free(namepeer);
+        namepeer = NULL;
+    }
     printf("Disconnected\n");
     exit(EXIT_SUCCESS);
 }

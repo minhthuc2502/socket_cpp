@@ -1,10 +1,12 @@
 #include "socket.hpp"
 #include <sys/socket.h>
 #include <unistd.h>
-#include <string.h>
+#include <cstring>
 #include <iostream>
 #include <termios.h>
+
 using namespace std;
+// Get first character in message
 static char getch(void)
 {
     char buf = 0;
@@ -27,6 +29,7 @@ static char getch(void)
     return buf;
 }
 
+// return first character
 static char check_press_key()
 {
     char chk;
@@ -37,12 +40,12 @@ static char check_press_key()
 Socket::Socket(int p, char* ad, char* cname)
 {
     port = p;
-    ipAddress = (char*) malloc(strlen(ad)/8 + 1);
+    ipAddress = new (char)(strlen(ad)/8 + 1);
     memset(ipAddress,0,strlen(ad));
     strcpy(ipAddress,ad);
-    name = (char*) malloc(strlen(cname)/8 + 1);
+    name = new (char)(strlen(cname)/8 + 1);
+    memset(name,0,strlen(cname));
     strcpy(name,cname);
-    namepeer = NULL;
 }
 
 void Socket::read_event()
@@ -60,7 +63,7 @@ void Socket::read_event()
         else if (ret == 0)
         {
             StopWait();
-            printf("disconnect from interlocutor\n");
+            printf("Disconnect from interlocutor\n");
             break;
         }
         if(buffer[0] != '\0')
@@ -72,9 +75,8 @@ void Socket::read_event()
 void Socket::write_event()
 {
     char message[1024] = {0};
-    char *strchar;
+    char *strchar = new char[1024];
     int ret = 0;
-    strchar = (char*) malloc(1024);
     while(1)
     {
         strchar[0] = check_press_key();
@@ -84,7 +86,7 @@ void Socket::write_event()
         ret = send(_fd , strchar, strlen(strchar) , 0);
         if(ret < 0)
         {
-            perror("ERROR reading from socket");
+            perror("ERROR writing to socket");
             break;
         }
         memset(strchar,0,strlen(strchar));
@@ -104,17 +106,13 @@ int Socket::EchangeMessage()
 void Socket::Wait()
 {
     std::unique_lock<std::mutex> lock(wait_mutex);
-    while(wait_thread)
-    {
-        cv_end.wait(lock);
-    }
+    cv_end.wait(lock);
     printf("Finish waiting\n");
 }
 
 void Socket::StopWait()
 {
     {
-        std::unique_lock<std::mutex> lock(wait_mutex);
         wait_thread = false;
         cv_end.notify_all();
     }
@@ -122,7 +120,7 @@ void Socket::StopWait()
 
 int Socket::EchangeHostName(int fd)
 {
-    namepeer = (char*) malloc(1024);
+    namepeer = new char[1024];
     send(fd, name, strlen(name),0);
     read(fd, namepeer, 1024);
     return 0;

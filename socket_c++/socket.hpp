@@ -11,20 +11,21 @@ using namespace std;
 
 class Socket
 {
+private:
+    bool wait_thread = false;
+    mutex wait_mutex;
+    condition_variable cv_end;
+    thread read_socket;     // thread to read message from the peer
+    thread write_socket;    // thread to write message to the peer
+    void read_event();      // function callback attach thread read_socket
+    void write_event();     // function callback attach thread write_socket
 protected:
     char* ipAddress;
     char* name;             // name of socket
     char* namepeer;         // name of peer in the communication
     int port;               // port
     int _fd;
-    thread read_socket;     // thread to read message from the peer
-    thread write_socket;    // thread to write message to the peer
     struct sockaddr_in address; 
-    bool wait_thread = false;
-    mutex wait_mutex;
-    condition_variable cv_end;
-    void read_event();      // function callback attach thread read_socket
-    void write_event();     // function callback attach thread write_socket
 public:
     /**
      * Constructor
